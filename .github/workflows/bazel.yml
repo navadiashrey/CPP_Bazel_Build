@@ -1,0 +1,49 @@
+name: Bazel C++ CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  format:
+    name: Clang Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install clang-format
+        run: sudo apt update && sudo apt install -y clang-format
+
+      - name: Check formatting
+        run: clang-format --dry-run --Werror src/*.cpp tests/*.cpp
+
+  build:
+    name: Bazel Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Bazel
+        uses: bazelbuild/setup-bazel@v4
+        with:
+          bazel-version: 8.3.1  # or latest stable
+
+      - name: Build
+        run: bazel build //src:hello --cxxopt='-std=c++17'
+
+  test:
+    name: Bazel Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Bazel
+        uses: bazelbuild/setup-bazel@v4
+        with:
+          bazel-version: 8.3.1
+
+      - name: Test
+        run: bazel test //tests:hello_test --cxxopt='-std=c++17'
+
