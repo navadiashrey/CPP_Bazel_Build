@@ -25,10 +25,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Bazel
-        uses: bazelbuild/setup-bazel@v4
+      - name: Set up Bazel environment
+        uses: bazel-contrib/setup-bazel@0.15.0
         with:
-          bazel-version: 8.3.1  # or latest stable
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          external-cache: true
 
       - name: Build
         run: bazel build //src:hello --cxxopt='-std=c++17'
@@ -39,11 +41,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Bazel
-        uses: bazelbuild/setup-bazel@v4
+      - name: Set up Bazel environment
+        uses: bazel-contrib/setup-bazel@0.15.0
         with:
-          bazel-version: 8.3.1
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          external-cache: true
 
       - name: Test
         run: bazel test //tests:hello_test --cxxopt='-std=c++17'
-
