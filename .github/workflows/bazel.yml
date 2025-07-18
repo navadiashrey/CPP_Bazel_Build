@@ -25,6 +25,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Restore Bazel Cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/bazel
+          key: bazel-cache-${{ runner.os }}-${{ github.workflow }}-${{ github.ref }}
+          restore-keys: |
+            bazel-cache-${{ runner.os }}-${{ github.workflow }}-
+
       - name: Set up Bazel environment
         uses: bazel-contrib/setup-bazel@0.15.0
         with:
@@ -41,6 +49,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Restore Bazel Cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/bazel
+          key: bazel-cache-${{ runner.os }}-${{ github.workflow }}-${{ github.ref }}
+          restore-keys: |
+            bazel-cache-${{ runner.os }}-${{ github.workflow }}-
+
       - name: Set up Bazel environment
         uses: bazel-contrib/setup-bazel@0.15.0
         with:
@@ -50,5 +66,3 @@ jobs:
 
       - name: Test
         run: bazel test //tests:hello_test --cxxopt='-std=c++17'
-
-        
