@@ -33,7 +33,7 @@ jobs:
           external-cache: true
 
       - name: Build
-        run: bazel build //src:hello --cxxopt='-std=c++17'
+        run: bazel build //src:my_hello --cxxopt='-std=c++17'
 
   test:
     name: Bazel Test
